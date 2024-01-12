@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>brief</title>
+  </head>
+  <body>
+    <input type="number" id="height" placeholder="cm" />
+    <input type="number" id="age" placeholder="ans" />
+
+    <input type="checkbox" id="Moyen" />
+    Moyen
+    <input type="checkbox" id="Mince" />
+    Mince
+    <input type="checkbox" id="Large" />
+    Large
+
+    <button id="btn">Claculate</button>
+
+    <p>the ideal weight should be:</p>
+    <p id="result"></p>
+    <p>the maximum weight should be:</p>
+    <p id="maximum"></p>
+
+    <script>
+      let height = document.getElementById("height");
+      let age = document.getElementById("age");
+      let Moyen = document.getElementById("Moyen");
+      let Mince = document.getElementById("Mince");
+      let Large = document.getElementById("Large");
+      let btn = document.getElementById("btn");
+      let result = document.getElementById("result");
+      let max = document.getElementById("maximum");
+      let arr = [];
+
+      let data = JSON.parse(localStorage.getItem("data"));
+
+      data.forEach((element) => {
+        max.innerHTML = element.mx;
+        result.innerHTML = element.avrg;
+      });
+
+      btn.addEventListener("click", function () {
+        if (age.value > 0 && height.value > 0) {
+          if (Mince.checked == true) {
+            let results = height.value - 100 + (age.value / 10) * 0.9 * 0.9;
+
+            result.innerHTML = `${results}kg`;
+
+            max.innerHTML = `${results + 6.5}kg`;
+          } else if (Moyen.checked == true) {
+            let results = height.value - 100 + (age.value / 10) * 0.9;
+
+            result.innerHTML = `${results}kg`;
+
+            max.innerHTML = `${results + 6.5}kg`;
+          } else {
+            let results = height.value - 100 + (age.value / 10) * 0.9 * 1.1;
+
+            result.innerHTML = `${results}kg`;
+
+            max.innerHTML = `${results + 6.5}kg`;
+          }
+
+          let obj = {
+            avrg: result.innerHTML,
+            mx: max.innerHTML,
+          };
+
+          arr.push(obj);
+
+          let storedArr = JSON.stringify(arr);
+
+          localStorage.setItem("data", storedArr);
+        }
+      });
+    </script>
+  </body>
+</html>
