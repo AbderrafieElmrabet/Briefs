@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>calculator</title>
+    <style></style>
+  </head>
+  <body>
+    <select id="numberSelect">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+    </select>
+
+    <p style="display: inline">*</p>
+
+    <input type="number" id="numberInput" />
+
+    <p style="display: inline">=</p>
+
+    <p id="result" style="display: inline"></p>
+
+    <button id="btn" style="display: block">click</button>
+
+    <button id="btn2" style="display: block">earase</button>
+
+    <p id="history"></p>
+
+    <script>
+      let selectNumber = document.getElementById("numberSelect");
+      let inputNumber = document.getElementById("numberInput");
+      let results = document.getElementById("result");
+      let btn = document.getElementById("btn");
+      let btn2 = document.getElementById("btn2");
+      let history = document.getElementById("history");
+      let arr = [];
+
+      btn2.addEventListener("click", function () {
+        history.innerHTML = "";
+        localStorage.removeItem("data");
+      });
+
+      btn.addEventListener("click", function () {
+        let finalResult = inputNumber.value * selectNumber.value;
+
+        results.innerHTML = finalResult;
+
+        let obj = {
+          qstn: `${selectNumber.value} * ${inputNumber.value}`,
+          ansr: `${finalResult}`,
+        };
+
+        history.innerHTML += `<br> ${obj.qstn} = ${obj.ansr}`;
+
+        arr.push(obj);
+
+        let storedArr = JSON.stringify(arr);
+
+        localStorage.setItem("data", storedArr);
+      });
+
+      arr = [...JSON.parse(localStorage.getItem("data"))];
+
+      arr.forEach((item) => {
+        history.innerHTML += `<br> ${item.qstn} = ${item.ansr}`;
+      });
+    </script>
+  </body>
+</html>
